@@ -34,7 +34,9 @@ db_name = reader.get(:db_name)
 db_name = reader.get('DB_NAME')
 ```
 
-Here's an example of a possibly useful script:
+Here's an example of a possibly useful script that creates a sql backup
+of multiple blogs on a shared host, adds them to the git repo (of the
+entire shell account), and pushes them to the origin repo:
 
 ```ruby
 #!/usr/bin/env ruby

@@ -4,15 +4,21 @@ class WCReader
 
   def initialize(filespec_or_array)
     case filespec_or_array
+
       when Array
         @lines = filespec_or_array
+
       when String
         filespec = filespec_or_array
         unless File.exists?(filespec)
           raise "File/directory '#{filespec}' does not exist."
         end
+
         if File.directory?(filespec)
           filespec = File.join(filespec, 'wp-config.php')
+          unless File.exists?(filespec)
+            raise "File '#{filespec}' does not exist."
+          end
         end
 
         @lines = File.readlines(filespec).map(&:chomp)

@@ -38,4 +38,6 @@ class Reader
     line.nil? ? nil : extract_value_from_line(line)
   end
 
+  alias [] get
+
 end

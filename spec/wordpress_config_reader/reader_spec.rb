@@ -38,4 +38,8 @@ describe Reader do
   it "(get) should get the correct value" do
     sample_reader.get('DB_NAME').should == 'mysite_wrd2'
   end
+
+  it "[] operator should get the correct value" do
+    sample_reader['DB_NAME'].should == 'mysite_wrd2'
+  end
 end

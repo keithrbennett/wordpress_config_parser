@@ -21,10 +21,8 @@ class Reader
 
   # Ex: define('DB_NAME', 'abcdefgh_0001');
   def find_def_line(token)
-    search_string = "define('#{token}',"
-    regexp = Regexp.new('^' + search_string)
-    matches = lines.grep(regexp)
-    puts "Found #{matches.size} matches."
+    search_string = "define('#{token}'"
+    matches = lines.select { |line| line[0...search_string.size] == search_string }
     matches.empty? ? nil : matches.last  # last one wins
   end
 
@@ -35,7 +33,9 @@ class Reader
     line.split("'")[3]
   end
 
-  def userid
-
+  def get(token)
+    line = find_def_line(token)
+    line.nil? ? nil : extract_value_from_line(line)
   end
+
 end

@@ -53,7 +53,10 @@ value = reader.db_xyz
 calling has_key? with string or symbol is recommended, and is very fast,
 since the found value will be cached. For example:
 
-```
+It is highly recommended to use Shellwords.escape on any values found
+in the config file before passing those values to a command line.
+You wouldn't want someone modifying a value to include "; rm -rf ~"!
+
 
 
 

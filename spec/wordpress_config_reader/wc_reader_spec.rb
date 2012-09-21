@@ -58,4 +58,12 @@ describe WCReader do
     expected = "mysqldump -umysite_user -pgobbledygook -hlocalhost mysite_wrd2"
     command.should == expected
   end
+
+  it "should correctly return true for has_key?(:db_name) and has_key?('DB_NAME')" do
+    (sample_reader.has_key?(:db_name) && sample_reader.has_key?('DB_NAME')).should be_true
+  end
+
+  it "should correctly return false for has_key?(:zyx) and has_key?('ZYX')" do
+    (sample_reader.has_key?(:zyx) || sample_reader.has_key?('ZYX')).should be_false
+  end
 end

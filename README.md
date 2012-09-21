@@ -22,7 +22,7 @@ in the config file.  Here's a code example:
 ```ruby
 require 'wordpress_config_reader'
 
-reader = Reader.new('/Users/me/public_html/blog')
+reader = WCReader.new('/Users/me/public_html/blog')
 time_str = Time.now.strftime("%Y_%m_%d__%H%M%S")
 outfilespec = "my-wp-db-backup-#{time_str}.sql" # (generate a good filespec)
 command = """mysqldump -u#{reader.db_user} -p#{reader.db_password} \
@@ -32,6 +32,31 @@ puts `git add #{outfilespec} 2>&1`
 puts `git commit -m "Added #{outfilespec}.
 
 ```
+
+CAUTION:
+
+It is assumed that the key in the config file is always, and all, upper case.
+Any key passed to the get and [] methods, and as a method name, will be
+converted to an upper case string for which to search in the config file.
+
+If you use the method name approach of reading the value for a key,
+then an exception will be raised if the key did not exist in the file.
+If you don't want that to happen, you can use the get or [] methods instead,
+as they return nil rather than raising an error.  For example:
+
+```ruby
+value = reader[:db_xyz]
+# instead of
+value = reader.db_xyz
+```
+
+calling has_key? with string or symbol is recommended, and is very fast,
+since the found value will be cached. For example:
+
+```
+
+
+
 
 ## Installation
 

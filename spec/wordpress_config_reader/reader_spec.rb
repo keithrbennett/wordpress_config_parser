@@ -1,5 +1,5 @@
 require_relative '../spec_helper'
-require 'reader'
+require 'wc_reader'
 require 'tempfile'
 
 describe WCReader do

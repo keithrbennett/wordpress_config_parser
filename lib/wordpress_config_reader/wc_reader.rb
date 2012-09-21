@@ -2,11 +2,6 @@ class WCReader
 
   attr_accessor :lines
 
-  # For when you already have a line array in memory
-  def self.create_with_line_array(lines = [])
-    WCReader.new(lines)
-  end
-
   def initialize(filespec_or_array)
     case filespec_or_array
       when Array

@@ -37,20 +37,32 @@ db_name = reader.get('DB_NAME')
 Here's an example of a possibly useful script:
 
 ```ruby
+#!/usr/bin/env ruby
+
 require 'wordpress_config_reader'
 
-reader = WCReader.new('/Users/me/public_html/blog')
+def run_command(command)
+  puts(command)
+  puts(`#{command}`)
+end
 
-time_str = Time.now.strftime("%Y_%m_%d__%H%M%S")
+home = ENV['HOME']
+output_dir = File.join(home, 'sql-backups')
+blognames = %w(myblog_1 myblog_2)
 
-outfilespec = "my-wp-db-backup-#{time_str}.sql" # (generate a good filespec)
-
-command = """mysqldump -u#{reader.db_user} -p#{reader.db_password} \
-    -h#{reader.db_hostname} #{reader.db_name} > outfilespec
-
-puts `#{command} 2>&1`
-puts `git add #{outfilespec} 2>&1`
-puts `git commit -m "Added #{outfilespec}.
+blognames.each do |blogname|
+  blog_dir = File.join(home, 'public_html', blogname)
+  reader = WCReader.new(blog_dir)
+  time_str = Time.now.strftime("%Y_%m_%d__%H%M%S")
+  outfilespec = File.join(output_dir, "#{blogname}-db-backup-#{time_str}.sql")
+  run_command("mysqldump -u#{reader.db_user} -p#{reader.db_password} " +
+      " -h#{reader.db_host} #{reader.db_name} 2>&1 | tee #{outfilespec}")
+  Dir.chdir(home) do   # in case you have another .git dir where you are
+    run_command("git add #{outfilespec} 2>&1")
+    run_command("git commit -m \"Added #{outfilespec}.\"")
+    run_command("git push -u origin master")
+  end
+end
 ```
 
 CAUTION:
@@ -60,7 +72,7 @@ Any key passed to the get and [] methods, and as a method name, will be
 converted to an upper case string for which to search in the config file.
 
 If you use the method name approach of reading the value for a key,
-then an exception will be raised if the key did not exist in the file.
+then a MethodMissingException will be raised if the key did not exist in the file.
 If you don't want that to happen, you can use the get or [] methods instead,
 as they return nil rather than raising an error.  For example:
 
@@ -70,8 +82,10 @@ value = reader[:db_xyz]
 value = reader.db_xyz
 ```
 
-calling has_key? with string or symbol is recommended, and is very fast,
-since the found value will be cached. For example:
+You can also call has_key? (with either string or symbol) to see if it's there
+before trying to get it.  This function is very fast, and pulls the value into
+the cache if it wasn't already there, so the subsequent access to get the
+actual value is very fast.
 
 It is highly recommended to use Shellwords.escape on any values found
 in the config file before passing those values to a command line.

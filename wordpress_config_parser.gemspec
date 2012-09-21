@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["keithrbennett@gmail.com"]
   gem.description   = %q{Gets values defined in Wordpress wp-config.php file.}
   gem.summary       = %q{Gets values defined in Wordpress wp-config.php file.}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/keithrbennett/wordpress_config_parser"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

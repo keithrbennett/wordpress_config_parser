@@ -66,4 +66,13 @@ describe WCReader do
   it "should correctly return false for has_key?(:zyx) and has_key?('ZYX')" do
     (sample_reader.has_key?(:zyx) || sample_reader.has_key?('ZYX')).should be_false
   end
+
+  it "should throw an ArgumentError if a bad file is provided" do
+    lambda { WCReader.new('/:!@#$%^&') }.should raise_error(ArgumentError)
+  end
+
+  it "should throw an ArgumentError if a something other than a string or array is provided" do
+    lambda { WCReader.new(123) }.should raise_error(ArgumentError)
+  end
+
 end

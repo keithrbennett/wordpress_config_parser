@@ -3,6 +3,10 @@ class WCReader
   attr_accessor :lines
 
   def initialize(filespec_or_array)
+
+    error_message = "WCReader constructor must be passed an array of lines, " +
+        "a config filespec, or a directory name that contains a wp-config.php file."
+
     case filespec_or_array
 
       when Array
@@ -11,17 +15,20 @@ class WCReader
       when String
         filespec = filespec_or_array
         unless File.exists?(filespec)
-          raise "File/directory '#{filespec}' does not exist."
+          raise ArgumentError.new("File/directory '#{filespec}' does not exist. #{error_message}")
         end
 
         if File.directory?(filespec)
           filespec = File.join(filespec, 'wp-config.php')
           unless File.exists?(filespec)
-            raise "File '#{filespec}' does not exist."
+            raise ArgumentError.new("File '#{filespec}' does not exist.  #{error_message}")
           end
         end
 
         @lines = File.readlines(filespec).map(&:chomp)
+
+      else
+        raise ArgumentError.new(error_message)
     end
 
     @cache = {}

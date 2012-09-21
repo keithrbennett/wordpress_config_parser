@@ -4,12 +4,12 @@ Reads a Wordpress configuration file (wp-config.php) and
 makes its define() data values easily accessible.
 
 This is useful, for example, in the creation of a mysqldump command
-without having to store config information in a second place, to avoid
+without having to store config information (especially passwords) in a second place, to avoid
 wasted effort and risk of stale data.
 
-The parsing algorithm is extremely primitive.
+The parsing algorithm is extremely primitive, but "works for me".
 
-The Reader constructor will handle any of the following as its parameter
+The Reader constructor will handle any of the following as its argument:
 
 * an array of lines
 * a filespec of a Wordpress config file

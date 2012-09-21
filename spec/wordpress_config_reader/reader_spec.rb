@@ -42,4 +42,8 @@ describe Reader do
   it "[] operator should get the correct value" do
     sample_reader['DB_NAME'].should == 'mysite_wrd2'
   end
+
+  it "should correctly generate a new method when receiving a property in lower case" do
+    sample_reader.db_name.should == 'mysite_wrd2'
+  end
 end

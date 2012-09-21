@@ -5,11 +5,11 @@ makes its define() data values easily accessible.
 
 This is useful, for example, in the creation of a mysqldump command
 without having to store config information (especially passwords) in a second place, to avoid
-wasted effort and risk of stale data.
+wasted effort, risk of stale data, and password compromise.
 
 The parsing algorithm is extremely primitive, but "works for me".
 
-The Reader constructor will handle any of the following as its argument:
+The WCReader constructor will handle any of the following as its argument:
 
 * an array of lines
 * a filespec of a Wordpress config file
@@ -17,20 +17,40 @@ The Reader constructor will handle any of the following as its argument:
   ('wp-config.php' is assumed to be the file's name).
 
 After instantiating a reader, you can access the variables defined
-in the config file.  Here's a code example:
+in the config file in the following ways:
+
+```ruby
+
+reader = WCReader.new('/Users/me/public_html/blog')
+
+db_name = reader.db_name
+# or
+db_name = reader['DB_NAME']
+# or
+db_name = reader[:db_name]
+# or
+db_name = reader.get(:db_name)
+# or
+db_name = reader.get('DB_NAME')
+```
+
+Here's an example of a possibly useful script:
 
 ```ruby
 require 'wordpress_config_reader'
 
 reader = WCReader.new('/Users/me/public_html/blog')
+
 time_str = Time.now.strftime("%Y_%m_%d__%H%M%S")
+
 outfilespec = "my-wp-db-backup-#{time_str}.sql" # (generate a good filespec)
+
 command = """mysqldump -u#{reader.db_user} -p#{reader.db_password} \
     -h#{reader.db_hostname} #{reader.db_name} > outfilespec
+
 puts `#{command} 2>&1`
 puts `git add #{outfilespec} 2>&1`
 puts `git commit -m "Added #{outfilespec}.
-
 ```
 
 CAUTION:

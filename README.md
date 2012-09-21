@@ -1,6 +1,9 @@
 # WordpressConfigReader
 
-TODO: Write a gem description
+Reads a Wordpress configuration file (wp-config.php) and
+makes key data values easily accessible.
+
+This is pretty primitive, but suits my needs.
 
 ## Installation
 

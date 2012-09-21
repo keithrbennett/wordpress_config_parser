@@ -1,11 +1,13 @@
 class Reader
 
+  attr_accessor :lines
+
   def self.create_with_line_array(lines)
-    @lines = lines
+    Reader.new(lines)
   end
 
   def self.create_with_filespec(filespec)
-    create_with_line_array(File.read(filespec))
+    create_with_line_array(File.readlines(filespec).map(&:chomp))
   end
 
   def self.create_with_directory(directory)
@@ -13,4 +15,7 @@ class Reader
     create_with_filespec(filespec)
   end
 
+  def initialize(lines)
+    @lines = lines
+  end
 end

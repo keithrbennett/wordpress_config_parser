@@ -75,4 +75,8 @@ describe WCReader do
     lambda { WCReader.new(123) }.should raise_error(ArgumentError)
   end
 
+  it "should throw a NoMethodError if a method is called for which there is no key" do
+    lambda { sample_reader.foo }.should raise_error(NoMethodError)
+  end
+
 end

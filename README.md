@@ -42,39 +42,51 @@ entire shell account), and pushes them to the origin repo:
 #!/usr/bin/env ruby
 
 require 'wordpress_config_reader'
+require 'shellwords'
+
 
 def run_command(command)
   puts(command)
   puts(`#{command}`)
 end
 
+
 home = ENV['HOME']
 output_dir = File.join(home, 'sql-backups')
-blognames = %w(myblog_1 myblog_2)
+blognames = %w(blog1 blog2)
+
 
 blognames.each do |blogname|
+
   blog_dir = File.join(home, 'public_html', blogname)
   reader = WCReader.new(blog_dir)
   time_str = Time.now.strftime("%Y_%m_%d__%H%M%S")
   outfilespec = File.join(output_dir, "#{blogname}-db-backup-#{time_str}.sql")
-  run_command("mysqldump -u#{reader.db_user} -p#{reader.db_password} " +
-      " -h#{reader.db_host} #{reader.db_name} 2>&1 | tee #{outfilespec}")
+
+  user     = Shellwords.escape(reader.db_user)
+  password = Shellwords.escape(reader.db_password)
+  host     = Shellwords.escape(reader.db_host)
+  name     = Shellwords.escape(reader.db_name)
+
+
   Dir.chdir(home) do   # in case you have another .git dir where you are
+    run_command("mysqldump -u#{user} -p#{password} -h#{host} #{name} 2>&1 | tee #{outfilespec}")
     run_command("git add #{outfilespec} 2>&1")
     run_command("git commit -m \"Added #{outfilespec}.\"")
-    run_command("git push -u origin master")
   end
 end
+
+run_command("git push -u origin master")
 ```
 
 CAUTION:
 
 It is assumed that the key in the config file is always, and all, upper case.
-Any key passed to the get and [] methods, and as a method name, will be
+Any key passed to the get and [] methods, or as a method name, will be
 converted to an upper case string for which to search in the config file.
 
 If you use the method name approach of reading the value for a key,
-then a MethodMissingException will be raised if the key did not exist in the file.
+then a NoMethodError will be raised if the key did not exist in the file.
 If you don't want that to happen, you can use the get or [] methods instead,
 as they return nil rather than raising an error.  For example:
 

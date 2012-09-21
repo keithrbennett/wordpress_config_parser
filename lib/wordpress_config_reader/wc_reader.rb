@@ -18,6 +18,7 @@ class WCReader
         @lines = File.readlines(filespec).map(&:chomp)
     end
 
+    @cache = {}
   end
 
   # Ex: define('DB_NAME', 'abcdefgh_0001');
@@ -35,8 +36,18 @@ class WCReader
   end
 
   def get(token)
-    line = find_def_line(token)
-    line.nil? ? nil : extract_value_from_line(line)
+
+    hash_key = token.to_s.downcase.to_sym
+
+    if @cache.has_key?(hash_key)
+      value = @cache[hash_key]
+    else
+      config_file_key = token.to_s.upcase
+      line = find_def_line(config_file_key)
+      value = (line.nil? ? nil : extract_value_from_line(line))
+      @cache[hash_key] = value
+    end
+    value
   end
 
   alias [] get

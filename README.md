@@ -1,4 +1,4 @@
-# WordpressConfigReader
+# WordpressConfigParser
 
 Reads a Wordpress configuration file (wp-config.php) and
 makes its define() data values easily accessible.
@@ -9,29 +9,29 @@ wasted effort, risk of stale data, and password compromise.
 
 The parsing algorithm is extremely primitive, but "works for me".
 
-The WCReader constructor will handle any of the following as its argument:
+The WCParser constructor will handle any of the following as its argument:
 
 * an array of lines
 * a filespec of a Wordpress config file
 * a filespec of a directory containing a Wordpress config file
   ('wp-config.php' is assumed to be the file's name).
 
-After instantiating a reader, you can access the variables defined
+After instantiating a parser, you can access the variables defined
 in the config file in the following ways:
 
 ```ruby
 
-reader = WCReader.new('/Users/me/public_html/blog')
+parser = WCParser.new('/Users/me/public_html/blog')
 
-db_name = reader.db_name
+db_name = parser.db_name
 # or
-db_name = reader['DB_NAME']
+db_name = parser['DB_NAME']
 # or
-db_name = reader[:db_name]
+db_name = parser[:db_name]
 # or
-db_name = reader.get(:db_name)
+db_name = parser.get(:db_name)
 # or
-db_name = reader.get('DB_NAME')
+db_name = parser.get('DB_NAME')
 ```
 
 Here's an example of a possibly useful script that creates a sql backup
@@ -41,7 +41,7 @@ entire shell account), and pushes them to the origin repo:
 ```ruby
 #!/usr/bin/env ruby
 
-require 'wordpress_config_reader'
+require 'wordpress_config_parser'
 require 'shellwords'
 
 
@@ -59,14 +59,14 @@ blognames = %w(blog1 blog2)
 blognames.each do |blogname|
 
   blog_dir = File.join(home, 'public_html', blogname)
-  reader = WCReader.new(blog_dir)
+  parser = WCParser.new(blog_dir)
   time_str = Time.now.strftime("%Y_%m_%d__%H%M%S")
   outfilespec = File.join(output_dir, "#{blogname}-db-backup-#{time_str}.sql")
 
-  user     = Shellwords.escape(reader.db_user)
-  password = Shellwords.escape(reader.db_password)
-  host     = Shellwords.escape(reader.db_host)
-  name     = Shellwords.escape(reader.db_name)
+  user     = Shellwords.escape(parser.db_user)
+  password = Shellwords.escape(parser.db_password)
+  host     = Shellwords.escape(parser.db_host)
+  name     = Shellwords.escape(parser.db_name)
 
 
   Dir.chdir(home) do   # in case you have another .git dir where you are
@@ -91,9 +91,9 @@ If you don't want that to happen, you can use the get or [] methods instead,
 as they return nil rather than raising an error.  For example:
 
 ```ruby
-value = reader[:db_xyz]
+value = parser[:db_xyz]
 # instead of
-value = reader.db_xyz
+value = parser.db_xyz
 ```
 
 You can also call has_key? (with either string or symbol) to see if it's there
@@ -113,7 +113,7 @@ You wouldn't want someone modifying a value to include "; rm -rf ~"!
 
 Add this line to your application's Gemfile:
 
-    gem 'wordpress_config_reader'
+    gem 'wordpress_config_parser'
 
 And then execute:
 
@@ -121,7 +121,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install wordpress_config_reader
+    $ gem install wordpress_config_parser
 
 ## Usage
 

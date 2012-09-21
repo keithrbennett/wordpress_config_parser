@@ -1,10 +1,10 @@
-class WCReader
+class WCParser
 
   attr_accessor :lines
 
   def initialize(filespec_or_array)
 
-    error_message = "WCReader constructor must be passed an array of lines, " +
+    error_message = "WCParser constructor must be passed an array of lines, " +
         "a config filespec, or a directory name that contains a wp-config.php file."
 
     case filespec_or_array

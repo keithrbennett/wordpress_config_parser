@@ -5,5 +5,5 @@ require "wordpress_config_reader/version"
 
 module WordpressConfigReader
 
-  require 'reader'
+  require 'wc_reader'
 end

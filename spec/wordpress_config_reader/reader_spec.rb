@@ -2,16 +2,16 @@ require_relative '../spec_helper'
 require 'reader'
 require 'tempfile'
 
-describe Reader do
+describe WCReader do
 
 
   let(:sample_lines) { %w(abc 789) }
   let(:sample_dirspec) { File.expand_path(File.join(File.dirname(__FILE__), '..', 'resources')) }
   let(:sample_filespec) { File.join(sample_dirspec, 'wp-config.php') }
-  let(:sample_reader) { Reader.new(sample_filespec) }
+  let(:sample_reader) { WCReader.new(sample_filespec) }
 
   it "should initialize correctly when calling create_with_lines" do
-    reader = Reader.new(sample_lines)
+    reader = WCReader.new(sample_lines)
     reader.lines.should == sample_lines
   end
 
@@ -20,7 +20,7 @@ describe Reader do
   end
 
   it "reader.lines should equal the initial array when calling create_with_filespec" do
-    reader = Reader.new(sample_filespec)
+    reader = WCReader.new(sample_filespec)
     reader.lines.should == File.readlines(sample_filespec).map(&:chomp)
   end
 

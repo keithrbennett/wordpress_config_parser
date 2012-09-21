@@ -1,5 +1,9 @@
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'wordpress_config_reader'))
+
 require "wordpress_config_reader/version"
 
+
 module WordpressConfigReader
-  # Your code goes here...
+
+  require 'reader'
 end

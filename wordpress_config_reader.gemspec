@@ -4,8 +4,8 @@ require File.expand_path('../lib/wordpress_config_reader/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Keith Bennett"]
   gem.email         = ["keithrbennett@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Gets values defined in Wordpress wp-config.php file.}
+  gem.summary       = %q{Gets values defined in Wordpress wp-config.php file.}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)

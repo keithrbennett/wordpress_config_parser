@@ -46,4 +46,16 @@ describe Reader do
   it "should correctly generate a new method when receiving a property in lower case" do
     sample_reader.db_name.should == 'mysite_wrd2'
   end
+
+  it "should correctly create a mysqladmin dump command with parameters from the file" do
+    db_name = sample_reader.db_name
+    db_password = sample_reader.db_password
+    db_hostname = sample_reader.db_host
+    db_user = sample_reader.db_user
+
+    # mysqldump -u#{userid} -p#{password} -h#{hostname} #{database_name} 2>&1 > #{outfilespec}`
+    command = "mysqldump -u#{db_user} -p#{db_password} -h#{db_hostname} #{db_name}"
+    expected = "mysqldump -umysite_user -pgobbledygook -hlocalhost mysite_wrd2"
+    command.should == expected
+  end
 end

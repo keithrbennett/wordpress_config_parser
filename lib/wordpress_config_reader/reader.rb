@@ -41,7 +41,7 @@ class Reader
   alias [] get
 
   # For missing methods, assume the name is the name, converted to lower case,
-  # of a defined value.  Creates the method, and adds it to the instance.
+  # of a defined value's key.  Creates the method, and adds it to the instance.
   def method_missing(method_name, *method_args)
     instance_eval("""
         def #{method_name.to_s.downcase}

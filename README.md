@@ -97,7 +97,7 @@ value = parser.db_xyz
 ```
 
 You can also call has_key? (with either string or symbol) to see if it's there
-before trying to get it.  This function is very fast, and pulls the value into
+before trying to get it.  This function pulls the value into
 the cache if it wasn't already there, so the subsequent access to get the
 actual value is very fast.
 

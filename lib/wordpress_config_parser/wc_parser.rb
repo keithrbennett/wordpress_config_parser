@@ -34,20 +34,6 @@ class WCParser
     @cache = {}
   end
 
-  # Ex: define('DB_NAME', 'abcdefgh_0001');
-  def find_def_line(token)
-    search_string = "define('#{token}'"
-    matches = lines.select { |line| line[0...search_string.size] == search_string }
-    matches.empty? ? nil : matches.last  # last one wins
-  end
-
-
-  def extract_value_from_line(line)
-    # Ex: define('DB_NAME', 'abcdefgh_0001');
-    # Splitting by ' will leave value as array[3]
-    line.split("'")[3]
-  end
-
   def get(token)
 
     hash_key = token.to_s.downcase.to_sym
@@ -91,5 +77,21 @@ class WCParser
 
     value
   end
+
+  # Ex: define('DB_NAME', 'abcdefgh_0001');
+  def find_def_line(token)
+    search_string = "define('#{token}'"
+    matches = lines.select { |line| line[0...search_string.size] == search_string }
+    matches.empty? ? nil : matches.last  # last one wins
+  end
+
+
+  def extract_value_from_line(line)
+    # Ex: define('DB_NAME', 'abcdefgh_0001');
+    # Splitting by ' will leave value as array[3]
+    line.split("'")[3]
+  end
+
+  private :find_def_line, :extract_value_from_line
 
 end

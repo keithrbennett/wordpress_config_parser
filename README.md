@@ -123,9 +123,6 @@ Or install it yourself as:
 
     $ gem install wordpress_config_parser
 
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 

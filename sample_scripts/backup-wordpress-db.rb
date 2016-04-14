@@ -44,7 +44,7 @@ blognames = ARGV
 blognames.each do |blogname|
 
   blog_dir = File.join(home, 'public_html', blogname)
-  reader = WCReader.new(blog_dir)
+  reader = WordpressConfigParser::Parser.new(blog_dir)
   outfilespec = File.join(output_dir, "#{blogname}-db-backup.sql")
 
   user     = Shellwords.escape(reader.db_user)

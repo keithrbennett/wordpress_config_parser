@@ -1,5 +1,5 @@
 module WordpressConfigParser
-class WordpressConfigParser
+class Parser
 
   attr_accessor :lines
 

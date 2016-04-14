@@ -12,39 +12,39 @@ describe WCParser do
 
   it "should initialize correctly when calling create_with_lines" do
     parser = WCParser.new(sample_lines)
-    parser.lines.should == sample_lines
+    expect(parser.lines).to eq(sample_lines)
   end
 
   it "parser.lines should be an array when instantiating with a filespec" do
-    sample_parser.lines.should be_a Array
+    expect(sample_parser.lines).to be_an(Array)
   end
 
   it "parser.lines should equal the initial array when calling create_with_filespec" do
     parser = WCParser.new(sample_filespec)
-    parser.lines.should == File.readlines(sample_filespec).map(&:chomp)
+    expect(parser.lines).to eq(File.readlines(sample_filespec).map(&:chomp))
   end
 
   it "should correctly extract the value from a config line" do
     config_line = "define('DB_NAME', 'abcdefgh_0001');"
-    sample_parser.extract_value_from_line(config_line).should == 'abcdefgh_0001'
+    expect(sample_parser.send(:extract_value_from_line, config_line)).to eq('abcdefgh_0001')
   end
 
   it "should extract the correct line when > 1 matches are present" do
-    line = sample_parser.find_def_line('DB_NAME')
-    value = sample_parser.extract_value_from_line(line)
-    value.should == 'mysite_wrd2'
+    line = sample_parser.send(:find_def_line, 'DB_NAME')
+    value = sample_parser.send(:extract_value_from_line, line)
+    expect(value).to eq('mysite_wrd2')
   end
 
   it "(get) should get the correct value" do
-    sample_parser.get('DB_NAME').should == 'mysite_wrd2'
+    expect(sample_parser.get('DB_NAME')).to eq('mysite_wrd2')
   end
 
   it "[] operator should get the correct value" do
-    sample_parser['DB_NAME'].should == 'mysite_wrd2'
+    expect(sample_parser['DB_NAME']).to eq('mysite_wrd2')
   end
 
   it "should correctly generate a new method when receiving a property in lower case" do
-    sample_parser.db_name.should == 'mysite_wrd2'
+    expect(sample_parser.db_name).to eq('mysite_wrd2')
   end
 
   it "should correctly create a mysqladmin dump command with parameters from the file" do
@@ -56,27 +56,27 @@ describe WCParser do
     # mysqldump -u#{userid} -p#{password} -h#{hostname} #{database_name} 2>&1 > #{outfilespec}`
     command = "mysqldump -u#{db_user} -p#{db_password} -h#{db_hostname} #{db_name}"
     expected = "mysqldump -umysite_user -pgobbledygook -hlocalhost mysite_wrd2"
-    command.should == expected
+    expect(command).to eq(expected)
   end
 
   it "should correctly return true for has_key?(:db_name) and has_key?('DB_NAME')" do
-    (sample_parser.has_key?(:db_name) && sample_parser.has_key?('DB_NAME')).should be_true
+    expect(sample_parser.has_key?(:db_name) && sample_parser.has_key?('DB_NAME')).to eq(true)
   end
 
   it "should correctly return false for has_key?(:zyx) and has_key?('ZYX')" do
-    (sample_parser.has_key?(:zyx) || sample_parser.has_key?('ZYX')).should be_false
+    expect(sample_parser.has_key?(:zyx) || sample_parser.has_key?('ZYX')).to eq(false)
   end
 
   it "should throw an ArgumentError if a bad file is provided" do
-    lambda { WCParser.new('/:!@#$%^&') }.should raise_error(ArgumentError)
+    expect{ WCParser.new('/:!@#$%^&') }.to raise_error(ArgumentError)
   end
 
   it "should throw an ArgumentError if a something other than a string or array is provided" do
-    lambda { WCParser.new(123) }.should raise_error(ArgumentError)
+    expect { WCParser.new(123) }.to raise_error(ArgumentError)
   end
 
   it "should throw a NoMethodError if a method is called for which there is no key" do
-    lambda { sample_parser.foo }.should raise_error(NoMethodError)
+    expect { sample_parser.foo }.to raise_error(NoMethodError)
   end
 
 end

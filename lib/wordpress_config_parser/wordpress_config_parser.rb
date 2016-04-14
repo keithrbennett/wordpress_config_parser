@@ -1,16 +1,19 @@
-class WCParser
+module WordpressConfigParser
+class WordpressConfigParser
 
   attr_accessor :lines
 
   def initialize(filespec_or_array)
 
+    @cache = {}
+
     error_message = "WCParser constructor must be passed an array of lines, " +
         "a config filespec, or a directory name that contains a wp-config.php file."
 
-    case filespec_or_array
+    @lines = case filespec_or_array
 
       when Array
-        @lines = filespec_or_array
+        filespec_or_array
 
       when String
         filespec = filespec_or_array
@@ -25,13 +28,12 @@ class WCParser
           end
         end
 
-        @lines = File.readlines(filespec).map(&:chomp)
+        File.readlines(filespec).map(&:chomp)
 
       else
         raise ArgumentError.new(error_message)
     end
 
-    @cache = {}
   end
 
   def get(token)
@@ -94,4 +96,5 @@ class WCParser
 
   private :find_def_line, :extract_value_from_line
 
+end
 end

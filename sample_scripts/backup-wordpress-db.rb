@@ -22,7 +22,7 @@
 #    Otherwise, those changes will be included in the commit,
 #    without any commit message to describe them.
 
-require 'wordpress_config_reader'
+require 'wordpress_config_parser'
 require 'shellwords'
 
 if ARGV.empty?

@@ -1,17 +1,19 @@
 require_relative '../spec_helper'
-require 'wc_parser'
+require 'wordpress_config_parser'
 require 'tempfile'
 
-describe WCParser do
+module WordpressConfigParser
+
+describe WordpressConfigParser do
 
 
   let(:sample_lines) { %w(abc 789) }
   let(:sample_dirspec) { File.expand_path(File.join(File.dirname(__FILE__), '..', 'resources')) }
   let(:sample_filespec) { File.join(sample_dirspec, 'wp-config.php') }
-  let(:sample_parser) { WCParser.new(sample_filespec) }
+  let(:sample_parser) { WordpressConfigParser.new(sample_filespec) }
 
   it "should initialize correctly when calling create_with_lines" do
-    parser = WCParser.new(sample_lines)
+    parser = WordpressConfigParser.new(sample_lines)
     expect(parser.lines).to eq(sample_lines)
   end
 
@@ -20,7 +22,7 @@ describe WCParser do
   end
 
   it "parser.lines should equal the initial array when calling create_with_filespec" do
-    parser = WCParser.new(sample_filespec)
+    parser = WordpressConfigParser.new(sample_filespec)
     expect(parser.lines).to eq(File.readlines(sample_filespec).map(&:chomp))
   end
 
@@ -68,11 +70,11 @@ describe WCParser do
   end
 
   it "should throw an ArgumentError if a bad file is provided" do
-    expect{ WCParser.new('/:!@#$%^&') }.to raise_error(ArgumentError)
+    expect{ WordpressConfigParser.new('/:!@#$%^&') }.to raise_error(ArgumentError)
   end
 
   it "should throw an ArgumentError if a something other than a string or array is provided" do
-    expect { WCParser.new(123) }.to raise_error(ArgumentError)
+    expect { WordpressConfigParser.new(123) }.to raise_error(ArgumentError)
   end
 
   it "should throw a NoMethodError if a method is called for which there is no key" do
@@ -80,3 +82,5 @@ describe WCParser do
   end
 
 end
+end
+

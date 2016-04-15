@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 #
-# backup-wordpress-db.rb
+# backup-wordpress-db
 #
 # Calls mysqldump to create a backup of a MySQL data base
 # in the form of a .sql file containing the SQL commands

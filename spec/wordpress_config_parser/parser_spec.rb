@@ -12,7 +12,7 @@ describe Parser do
   let(:sample_filespec) { File.join(sample_dirspec, 'wp-config.php') }
   let(:sample_parser) { Parser.new(sample_filespec) }
 
-  it "should initialize correctly when calling create_with_lines" do
+  it "should initialize correctly when creating with an array of lines" do
     parser = Parser.new(sample_lines)
     expect(parser.lines).to eq(sample_lines)
   end
@@ -21,7 +21,7 @@ describe Parser do
     expect(sample_parser.lines).to be_an(Array)
   end
 
-  it "parser.lines should equal the initial array when calling create_with_filespec" do
+  specify "parser.lines should equal the initial array when instantiating with a filespec" do
     parser = Parser.new(sample_filespec)
     expect(parser.lines).to eq(File.readlines(sample_filespec).map(&:chomp))
   end
@@ -31,13 +31,13 @@ describe Parser do
     expect(sample_parser.send(:extract_value_from_line, config_line)).to eq('abcdefgh_0001')
   end
 
-  it "should extract the correct line when > 1 matches are present" do
+  it "should extract the correct (i.e., the last) matching line when > 1 matches are present" do
     line = sample_parser.send(:find_def_line, 'DB_NAME')
     value = sample_parser.send(:extract_value_from_line, line)
     expect(value).to eq('mysite_wrd2')
   end
 
-  it "(get) should get the correct value" do
+  specify "get should get the correct value" do
     expect(sample_parser.get('DB_NAME')).to eq('mysite_wrd2')
   end
 
@@ -50,10 +50,10 @@ describe Parser do
   end
 
   it "should correctly create a mysqladmin dump command with parameters from the file" do
-    db_name = sample_parser.db_name
+    db_name     = sample_parser.db_name
     db_password = sample_parser.db_password
     db_hostname = sample_parser.db_host
-    db_user = sample_parser.db_user
+    db_user     = sample_parser.db_user
 
     # mysqldump -u#{userid} -p#{password} -h#{hostname} #{database_name} 2>&1 > #{outfilespec}`
     command = "mysqldump -u#{db_user} -p#{db_password} -h#{db_hostname} #{db_name}"

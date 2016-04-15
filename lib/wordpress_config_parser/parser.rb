@@ -55,24 +55,11 @@ class Parser
   alias [] get
 
   # For missing methods, assume the method_name is the name or symbol
-  # of a defined value's key.  If the key exists in the config file,
-  # a method is created and that value returned.  Otherwise, super's
-  # method_missing will be called.
+  # of a defined value's key.  The key is looked up, and if it exists,
+  # its corresponding value is returned; otherwise, super's
+  # method_missing is called.
   def method_missing(method_name, *method_args)
-
-    value = get(method_name)
-
-    if value.nil?
-      super.method_missing(method_name, *method_args)
-    else
-      instance_eval("""
-          def #{method_name.to_s.downcase}
-            get('#{method_name.to_s.upcase}')
-          end
-      """)
-    end
-
-    value
+    get(method_name) || super.method_missing(method_name, *method_args)
   end
 
 

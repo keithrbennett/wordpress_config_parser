@@ -39,15 +39,11 @@ class Parser
 
     hash_key = token.to_s.downcase.to_sym
 
-    if @cache.has_key?(hash_key)
-      value = @cache[hash_key]
-    else
+    @cache[hash_key] ||= begin
       config_file_key = token.to_s.upcase
       line = find_def_line(config_file_key)
-      value = (line.nil? ? nil : extract_value_from_line(line))
-      @cache[hash_key] = value # Note: cache will contain any invalid keys requested
+      line.nil? ? nil : extract_value_from_line(line)   # Note: cache will contain any invalid keys requested
     end
-    value
   end
 
 

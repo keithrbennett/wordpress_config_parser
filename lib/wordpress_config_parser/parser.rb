@@ -3,6 +3,7 @@ class Parser
 
   attr_accessor :lines
 
+
   def initialize(filespec_or_array)
 
     @cache = {}
@@ -15,26 +16,24 @@ class Parser
       when Array
         filespec_or_array
 
-      when String
+      when String  # can be the config filespec or its directory
         filespec = filespec_or_array
-        unless File.exists?(filespec)
-          raise ArgumentError.new("File/directory '#{filespec}' does not exist. #{error_message}")
-        end
 
         if File.directory?(filespec)
           filespec = File.join(filespec, 'wp-config.php')
-          unless File.exists?(filespec)
-            raise ArgumentError.new("File '#{filespec}' does not exist.  #{error_message}")
-          end
+        end
+
+        unless File.file?(filespec)
+          raise ArgumentError.new("File '#{filespec}' does not exist.  #{error_message}")
         end
 
         File.readlines(filespec).map(&:chomp)
 
-      else
+      else  # error: neither array nor string
         raise ArgumentError.new(error_message)
     end
-
   end
+
 
   def get(token)
 
@@ -79,6 +78,7 @@ class Parser
 
     value
   end
+
 
   # Ex: define('DB_NAME', 'abcdefgh_0001');
   def find_def_line(token)

@@ -44,13 +44,13 @@ blognames = ARGV
 blognames.each do |blogname|
 
   blog_dir = File.join(home, 'public_html', blogname)
-  reader = WordpressConfigParser::Parser.new(blog_dir)
+  parser = WordpressConfigParser::Parser.new(blog_dir)
   outfilespec = File.join(output_dir, "#{blogname}-db-backup.sql")
 
-  user     = Shellwords.escape(reader.db_user)
-  password = Shellwords.escape(reader.db_password)
-  host     = Shellwords.escape(reader.db_host)
-  name     = Shellwords.escape(reader.db_name)
+  user     = Shellwords.escape(parser.db_user)
+  password = Shellwords.escape(parser.db_password)
+  host     = Shellwords.escape(parser.db_host)
+  name     = Shellwords.escape(parser.db_name)
 
 
   Dir.chdir(output_dir) do  # make sure we're in the right repo

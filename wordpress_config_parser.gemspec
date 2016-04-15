@@ -14,4 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "wordpress_config_parser"
   gem.require_paths = ["lib"]
   gem.version       = WordpressConfigParser::VERSION
+
+  gem.add_development_dependency "rspec", '~> 3.0'
+
 end

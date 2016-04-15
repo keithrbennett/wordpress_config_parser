@@ -1,12 +1,13 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/wordpress_config_parser/version', __FILE__)
+require_relative 'lib/wordpress_config_parser/version'
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Keith Bennett"]
   gem.email         = ["keithrbennett@gmail.com"]
   gem.description   = %q{Gets values defined in Wordpress wp-config.php file.}
-  gem.summary       = %q{Gets values defined in Wordpress wp-config.php file.}
+  gem.summary       = gem.description
   gem.homepage      = "https://github.com/keithrbennett/wordpress_config_parser"
+  gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

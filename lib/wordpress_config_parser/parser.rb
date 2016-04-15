@@ -63,11 +63,10 @@ class Parser
   end
 
 
-  # Ex: define('DB_NAME', 'abcdefgh_0001');
+  # Gets *last* matching def line's value, or nil if not found.
   def find_def_line(token)
     search_string = "define('#{token}'"
-    matches = lines.select { |line| line[0...search_string.size] == search_string }
-    matches.empty? ? nil : matches.last  # last one wins
+    lines.reverse.detect { |line| line.start_with?(search_string) }
   end
 
 

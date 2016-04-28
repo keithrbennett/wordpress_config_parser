@@ -37,6 +37,11 @@ def run_command(command)
 end
 
 
+def datetime_stamp
+  Time.now.strftime('%Y-%m-%d_%H-%M-%S')
+end
+
+
 home = ENV['HOME']
 output_dir = File.join(home, 'sql-backups')
 blognames = ARGV
@@ -45,7 +50,7 @@ blognames.each do |blogname|
 
   blog_dir = File.join(home, 'public_html', blogname)
   parser = WordpressConfigParser::Parser.new(blog_dir)
-  outfilespec = File.join(output_dir, "#{blogname}-db-backup.sql")
+  outfilespec = File.join(output_dir, "#{blogname}-db-backup-#{datetime_stamp}.sql")
 
   user     = Shellwords.escape(parser.db_user)
   password = Shellwords.escape(parser.db_password)
